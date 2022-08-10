@@ -15,7 +15,7 @@ interface AsteroidService {
 
     //endpoint put here just to test
     @GET("neo/rest/v1/feed?start_date=2015-09-07&end_date=2015-09-08&api_key=3qvrO1Dyto12Tj7xuY9nr22BiMzgbSpxDViurFQO")
-    fun getAllAsteroidsAsync(): NetWorkAsteroidContainer
+    suspend fun getAllAsteroidsAsync(): String
 }
 
 private val moshi = Moshi.Builder()
@@ -24,10 +24,10 @@ private val moshi = Moshi.Builder()
 
 object Network {
     private val retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .addConverterFactory(ScalarsConverterFactory.create())
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
+        .baseUrl(BASE_URL)
         .build()
 
     val asteroids = retrofit.create(AsteroidService::class.java)

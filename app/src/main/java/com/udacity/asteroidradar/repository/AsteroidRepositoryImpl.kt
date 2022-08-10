@@ -9,6 +9,7 @@ import com.udacity.asteroidradar.network.Asteroid
 import com.udacity.asteroidradar.network.Network
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 
 class AsteroidRepositoryImpl(private val database: AsteroidDatabase) {
 
@@ -20,12 +21,17 @@ class AsteroidRepositoryImpl(private val database: AsteroidDatabase) {
     suspend fun getAllAsteroids() {
         withContext(Dispatchers.IO) {
             val response = Network.asteroids.getAllAsteroidsAsync()
+            val parsedResponse = parseAsteroidsJsonResult(JSONObject(response))
+            //database.asteroidDao.insertAll(*asDatabaseAsteroid(parsedResponse))
+
+
+            //val response = Network.asteroids.getAllAsteroidsAsync()
             //val parsedResponse = parseAsteroidsJsonResult(response)
             //database.asteroidDao.insertAll(*asDatabaseAsteroid(parsedResponse))
         }
     }
 
-/*    private fun asDatabaseAsteroid(
+    private fun asDatabaseAsteroid(
         listOfAsteroids: ArrayList<com.udacity.asteroidradar.models.Asteroid>
     ): Array<DatabaseAsteroid> {
         return listOfAsteroids.map {
@@ -39,7 +45,7 @@ class AsteroidRepositoryImpl(private val database: AsteroidDatabase) {
                 estimatedDiameterMax = it.estimatedDiameter
             )
         }.toTypedArray()
-    }*/
+    }
 
     private fun List<DatabaseAsteroid>.asDomainModel(): List<Asteroid> {
         return this.map {
