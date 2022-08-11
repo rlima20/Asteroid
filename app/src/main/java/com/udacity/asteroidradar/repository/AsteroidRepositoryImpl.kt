@@ -22,7 +22,7 @@ class AsteroidRepositoryImpl(private val database: AsteroidDatabase) {
         withContext(Dispatchers.IO) {
             val response = Network.asteroids.getAllAsteroidsAsync()
             val parsedResponse = parseAsteroidsJsonResult(JSONObject(response))
-            //database.asteroidDao.insertAll(*asDatabaseAsteroid(parsedResponse))
+            database.asteroidDao.insertAll(*asDatabaseAsteroid(parsedResponse))
 
 
             //val response = Network.asteroids.getAllAsteroidsAsync()

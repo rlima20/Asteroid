@@ -14,7 +14,8 @@ import retrofit2.http.GET
 interface AsteroidService {
 
     //endpoint put here just to test
-    @GET("neo/rest/v1/feed?start_date=2015-09-07&end_date=2015-09-08&api_key=3qvrO1Dyto12Tj7xuY9nr22BiMzgbSpxDViurFQO")
+    @GET("neo/rest/v1/feed?start_date=2022-08-10&end_date=2022-08-08&api_key" +
+        "=3qvrO1Dyto12Tj7xuY9nr22BiMzgbSpxDViurFQO")
     suspend fun getAllAsteroidsAsync(): String
 }
 
@@ -24,8 +25,8 @@ private val moshi = Moshi.Builder()
 
 object Network {
     private val retrofit = Retrofit.Builder()
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .addConverterFactory(ScalarsConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .baseUrl(BASE_URL)
         .build()
