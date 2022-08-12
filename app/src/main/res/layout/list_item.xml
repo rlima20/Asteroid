@@ -2,6 +2,7 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout">
 
     <data>
@@ -17,32 +18,42 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/app_background">
 
         <TextView
             android:id="@+id/textViewName"
+            style="@style/CustomHeadline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="@{asteroid.name}"
-            android:textColor="@color/default_text_color"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="68347(2001 KB67)" />
 
         <TextView
             android:id="@+id/textViewDate"
+            style="@style/CustomText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
             android:text="@{asteroid.name}"
-            android:textColor="@color/default_text_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewName" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewName"
+            tools:text="2020-02-08" />
 
         <ImageView
             android:id="@+id/imageViewIsHazardous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:onClick="@{() -> clickListener.onClick(asteroid)}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_status_normal" />
