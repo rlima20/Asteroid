@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.repository.AsteroidRepositoryImpl
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 import kotlinx.coroutines.launch
 
 enum class AsteroidApiStatus { LOADING, ERROR, DONE }
@@ -25,9 +25,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val status: LiveData<AsteroidApiStatus>
         get() = _status
 
-    private var viewModelJob = Job()
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
     val asteroids = asteroidRepositoryImpl.asteroids
 
     init {
@@ -35,13 +32,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
         viewModelScope.launch {
             try {
-                asteroidRepositoryImpl.getAllAsteroids()
+                asteroidRepositoryImpl.getAllAsteroids(getCurrentFormattedDate())
                 _status.value = AsteroidApiStatus.DONE
             } catch (e: Throwable) {
                 _status.value = AsteroidApiStatus.ERROR
 
             }
         }
+    }
+
+    private fun getCurrentFormattedDate(): String {
+        val date = Calendar.getInstance().time
+        val dateTime = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return dateTime.format(date)
     }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {

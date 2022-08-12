@@ -1,5 +1,5 @@
 package com.udacity.asteroidradar.repository
 
 interface AsteroidRepository {
-    suspend fun getAllAsteroids()
+    suspend fun getAllAsteroids(currentDate: String)
 }

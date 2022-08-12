@@ -19,11 +19,11 @@ class AsteroidRepositoryImpl(private val database: AsteroidDatabase) : AsteroidR
             it.asDomainModel()
         }
 
-    override suspend fun getAllAsteroids() {
+    override suspend fun getAllAsteroids(currentDate: String) {
         withContext(Dispatchers.IO) {
             val response = Network.asteroids.getAllAsteroidsAsync(
-                "2022-08-12",
-                "2022-08-11",
+                currentDate,
+                currentDate,
                 API_KEY
             )
 
