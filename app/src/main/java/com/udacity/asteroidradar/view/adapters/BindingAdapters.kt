@@ -1,8 +1,35 @@
-package com.udacity.asteroidradar
+package com.udacity.asteroidradar.view.adapters
 
+import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.udacity.asteroidradar.R
+import com.udacity.asteroidradar.network.AsteroidDTO
+import com.udacity.asteroidradar.viewmodel.AsteroidApiStatus
+
+/**
+ * When (data is null), hide the [RecyclerView], otherwise show it.
+ */
+@BindingAdapter("listData")
+fun bindRecyclerView(recyclerView: RecyclerView, data: List<AsteroidDTO>?) {
+    val adapter = recyclerView.adapter as AsteroidsAdapter
+    adapter.submitList(data) {
+        // scroll the list to the top after the diffs are calculated and posted
+        recyclerView.scrollToPosition(0)
+    }
+}
+
+@BindingAdapter("loadProgressBar")
+fun bindLoading(progressBar: ProgressBar, data: AsteroidApiStatus) {
+    if (data == AsteroidApiStatus.LOADING) {
+        progressBar.visibility = View.VISIBLE
+    } else {
+        progressBar.visibility = View.GONE
+    }
+}
 
 @BindingAdapter("statusIcon")
 fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {

@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class DatabaseAsteroid constructor(
+data class AsteroidEntity constructor(
     @PrimaryKey(autoGenerate = true)
     val id: Long?,
     val name: String?,

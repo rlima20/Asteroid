@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 
 private lateinit var INSTANCE: AsteroidDatabase
 
-@Database(entities = [DatabaseAsteroid::class], version = 1)
+@Database(entities = [AsteroidEntity::class], version = 1)
 abstract class AsteroidDatabase : RoomDatabase() {
     abstract val asteroidDao: AsteroidDao
 }

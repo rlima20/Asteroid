@@ -2,40 +2,43 @@ package com.udacity.asteroidradar.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
+import com.udacity.asteroidradar.constants.Constants.API_KEY
 import com.udacity.asteroidradar.database.AsteroidDatabase
-import com.udacity.asteroidradar.database.DatabaseAsteroid
-import com.udacity.asteroidradar.network.Asteroid
+import com.udacity.asteroidradar.database.AsteroidEntity
+import com.udacity.asteroidradar.network.AsteroidDTO
 import com.udacity.asteroidradar.network.Network
+import com.udacity.asteroidradar.network.parseAsteroidsJsonResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
-class AsteroidRepositoryImpl(private val database: AsteroidDatabase) {
+class AsteroidRepositoryImpl(private val database: AsteroidDatabase) : AsteroidRepository {
 
-    val asteroids: LiveData<List<Asteroid>> =
+    val asteroids: LiveData<List<AsteroidDTO>> =
         Transformations.map(database.asteroidDao.getAll()) {
             it.asDomainModel()
         }
 
-    suspend fun getAllAsteroids() {
+    override suspend fun getAllAsteroids() {
         withContext(Dispatchers.IO) {
-            val response = Network.asteroids.getAllAsteroidsAsync()
-            val parsedResponse = parseAsteroidsJsonResult(JSONObject(response))
-            database.asteroidDao.insertAll(*asDatabaseAsteroid(parsedResponse))
+            val response = Network.asteroids.getAllAsteroidsAsync(
+                "2022-08-12",
+                "2022-08-11",
+                API_KEY
+            )
 
-
-            //val response = Network.asteroids.getAllAsteroidsAsync()
-            //val parsedResponse = parseAsteroidsJsonResult(response)
-            //database.asteroidDao.insertAll(*asDatabaseAsteroid(parsedResponse))
+            if (response.isSuccessful) {
+                val parsedResponse = parseAsteroidsJsonResult(JSONObject(response.body()!!))
+                database.asteroidDao.insertAll(*asDatabaseAsteroid(parsedResponse))
+            }
         }
     }
 
     private fun asDatabaseAsteroid(
         listOfAsteroids: ArrayList<com.udacity.asteroidradar.models.Asteroid>
-    ): Array<DatabaseAsteroid> {
+    ): Array<AsteroidEntity> {
         return listOfAsteroids.map {
-            DatabaseAsteroid(
+            AsteroidEntity(
                 id = it.id,
                 name = it.codename,
                 absoluteMagnitude = it.absoluteMagnitude,
@@ -47,9 +50,9 @@ class AsteroidRepositoryImpl(private val database: AsteroidDatabase) {
         }.toTypedArray()
     }
 
-    private fun List<DatabaseAsteroid>.asDomainModel(): List<Asteroid> {
+    private fun List<AsteroidEntity>.asDomainModel(): List<AsteroidDTO> {
         return this.map {
-            Asteroid(
+            AsteroidDTO(
                 id = it.id,
                 name = it.name,
                 absoluteMagnitude = it.absoluteMagnitude,

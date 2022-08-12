@@ -8,9 +8,9 @@ import androidx.room.Query
 
 @Dao
 interface AsteroidDao {
-    @Query("select * from databaseasteroid")
-    fun getAll(): LiveData<List<DatabaseAsteroid>>
+    @Query("select * from asteroidentity")
+    fun getAll(): LiveData<List<AsteroidEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg asteroids: DatabaseAsteroid)
+    fun insertAll(vararg asteroidEntities: AsteroidEntity)
 }

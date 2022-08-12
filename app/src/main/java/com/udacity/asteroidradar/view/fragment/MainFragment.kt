@@ -8,10 +8,11 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
+import com.udacity.asteroidradar.view.adapters.AsteroidClickListener
+import com.udacity.asteroidradar.view.adapters.AsteroidsAdapter
 import com.udacity.asteroidradar.viewmodel.MainViewModel
 
 class MainFragment : Fragment() {
@@ -24,22 +25,19 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        return setupBinding(inflater).root
+    }
+
+    private fun setupBinding(inflater: LayoutInflater): FragmentMainBinding {
         val binding = FragmentMainBinding.inflate(inflater)
+        val adapter = AsteroidsAdapter(AsteroidClickListener {})
+
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        binding.asteroidRecycler.adapter = adapter
+
         setHasOptionsMenu(true)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupObservers()
-    }
-
-    private fun setupObservers() {
-  /*      viewModel.asteroids.observe(viewLifecycleOwner, Observer { Asteroids ->
-
-        })*/
+        return binding
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
