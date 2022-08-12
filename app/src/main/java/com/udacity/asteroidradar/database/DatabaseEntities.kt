@@ -8,9 +8,10 @@ data class AsteroidEntity constructor(
     @PrimaryKey(autoGenerate = true)
     val id: Long?,
     val name: String?,
+    val closeApproachDate: String,
     val absoluteMagnitude: Double?,
-    val estimatedDiameterMax: Double?,
-    val isPotentiallyHazardousAsteroid: Boolean?,
-    val kilometersPerSecond: Double?,
-    val astronomical: Double?
+    val estimatedDiameter: Double?,
+    val relativeVelocity: Double,
+    val distanceFromEarth: Double,
+    val isPotentiallyHazardousAsteroid: Boolean?
 )

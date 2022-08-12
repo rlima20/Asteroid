@@ -41,11 +41,12 @@ class AsteroidRepositoryImpl(private val database: AsteroidDatabase) : AsteroidR
             AsteroidEntity(
                 id = it.id,
                 name = it.codename,
+                closeApproachDate = it.closeApproachDate,
                 absoluteMagnitude = it.absoluteMagnitude,
-                isPotentiallyHazardousAsteroid = it.isPotentiallyHazardous,
-                kilometersPerSecond = it.distanceFromEarth,
-                astronomical = it.relativeVelocity,
-                estimatedDiameterMax = it.estimatedDiameter
+                estimatedDiameter = it.estimatedDiameter,
+                relativeVelocity = it.relativeVelocity,
+                distanceFromEarth = it.distanceFromEarth,
+                isPotentiallyHazardousAsteroid = it.isPotentiallyHazardous
             )
         }.toTypedArray()
     }
@@ -55,11 +56,12 @@ class AsteroidRepositoryImpl(private val database: AsteroidDatabase) : AsteroidR
             AsteroidDTO(
                 id = it.id,
                 name = it.name,
+                closeApproachDate = it.closeApproachDate,
                 absoluteMagnitude = it.absoluteMagnitude,
-                estimatedDiameter = it.estimatedDiameterMax,
+                estimatedDiameter = it.estimatedDiameter,
                 isPotentiallyHazardousAsteroid = it.isPotentiallyHazardousAsteroid,
-                kilometersPerSecond = it.kilometersPerSecond,
-                astronomical = it.astronomical
+                kilometersPerSecond = it.relativeVelocity,
+                astronomical = it.distanceFromEarth
             )
         }
     }
