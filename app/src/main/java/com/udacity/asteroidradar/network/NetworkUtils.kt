@@ -2,10 +2,19 @@ package com.udacity.asteroidradar.network
 
 import com.udacity.asteroidradar.constants.Constants
 import com.udacity.asteroidradar.models.Asteroid
+import com.udacity.asteroidradar.models.PictureOfDay
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import org.json.JSONObject
+
+fun parsePodJsonResult(jsonResult: JSONObject): PictureOfDay{
+    return PictureOfDay(
+        mediaType = jsonResult.getString("media_type"),
+        title = jsonResult.getString("title"),
+        url = jsonResult.getString("url")
+    )
+}
 
 fun parseAsteroidsJsonResult(jsonResult: JSONObject): ArrayList<Asteroid> {
     val nearEarthObjectsJson = jsonResult.getJSONObject("near_earth_objects")

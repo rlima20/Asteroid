@@ -7,8 +7,11 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.view.adapters.AsteroidClickListener
@@ -35,6 +38,11 @@ class MainFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.asteroidRecycler.adapter = adapter
+
+        //TODO - PAREI AQUI - O pod está vindo como null
+        viewModel.pod.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(requireContext(), "Message: ${it.url}", Toast.LENGTH_SHORT).show()
+        })
 
         setHasOptionsMenu(true)
         return binding

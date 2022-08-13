@@ -6,9 +6,10 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.network.AsteroidDTO
-import com.udacity.asteroidradar.viewmodel.AsteroidApiStatus
+import com.udacity.asteroidradar.viewmodel.ApiStatus
 
 /**
  * When (data is null), hide the [RecyclerView], otherwise show it.
@@ -23,12 +24,17 @@ fun bindRecyclerView(recyclerView: RecyclerView, data: List<AsteroidDTO>?) {
 }
 
 @BindingAdapter("loadProgressBar")
-fun bindLoading(progressBar: ProgressBar, data: AsteroidApiStatus) {
-    if (data == AsteroidApiStatus.LOADING) {
+fun bindLoading(progressBar: ProgressBar, data: ApiStatus) {
+    if (data == ApiStatus.LOADING) {
         progressBar.visibility = View.VISIBLE
     } else {
         progressBar.visibility = View.GONE
     }
+}
+
+@BindingAdapter("downloadImage")
+fun bindImage(imageView: ImageView, url: String) {
+    Picasso.get().load(url).into(imageView)
 }
 
 @BindingAdapter("statusIcon")
