@@ -33,7 +33,7 @@ fun bindLoading(progressBar: ProgressBar, data: ApiStatus) {
 }
 
 @BindingAdapter("downloadImage")
-fun bindImage(imageView: ImageView, url: String) {
+fun downloadAndBindImage(imageView: ImageView, url: String) {
     Picasso.get().load(url).into(imageView)
 }
 

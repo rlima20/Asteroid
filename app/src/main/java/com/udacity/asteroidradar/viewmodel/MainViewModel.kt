@@ -48,7 +48,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try{
                 asteroidRepositoryImpl.getPictureOfDay(API_KEY)
-                _pod.value = asteroidRepositoryImpl.pod.value
+                _pod.value = asteroidRepositoryImpl.pictureOfDay
             }catch (e: Throwable){
                 Log.i("pod", "Error")
             }

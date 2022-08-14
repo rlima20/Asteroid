@@ -16,7 +16,9 @@ import retrofit2.http.Query
 @JsonClass(generateAdapter = true)
 interface PodService {
     @GET("planetary/apod")
-    suspend fun getPictureOfTheDayAsync(@Query("api_key") api_key: String): PictureOfDay
+    suspend fun getPictureOfTheDayAsync(
+        @Query("api_key") api_key: String
+    ): Response<PictureOfDay>
 }
 
 private val moshi = Moshi.Builder()
