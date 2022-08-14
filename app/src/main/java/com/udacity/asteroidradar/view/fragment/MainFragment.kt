@@ -7,17 +7,14 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
-import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.view.adapters.AsteroidClickListener
 import com.udacity.asteroidradar.view.adapters.AsteroidsAdapter
+import com.udacity.asteroidradar.view.adapters.downLoadImage
 import com.udacity.asteroidradar.viewmodel.MainViewModel
 
 class MainFragment : Fragment() {
@@ -42,19 +39,11 @@ class MainFragment : Fragment() {
         binding.asteroidRecycler.adapter = adapter
 
         viewModel.pod.observe(viewLifecycleOwner, Observer { pod ->
-            binding.activityMainImageOfTheDay.downLoadImage(pod.url)
+            binding.activityMainImageOfTheDay.downLoadImage(this@MainFragment, pod.url)
         })
 
         setHasOptionsMenu(true)
         return binding
-    }
-
-    private fun ImageView.downLoadImage(url: String) {
-        Glide
-            .with(this@MainFragment)
-            .load(url)
-            .centerCrop()
-            .into(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

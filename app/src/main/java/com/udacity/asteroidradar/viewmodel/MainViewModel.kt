@@ -12,9 +12,7 @@ import com.udacity.asteroidradar.constants.Constants.API_KEY
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.models.PictureOfDay
 import com.udacity.asteroidradar.repository.AsteroidRepositoryImpl
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
+import com.udacity.asteroidradar.view.adapters.getCurrentFormattedDate
 import kotlinx.coroutines.launch
 
 enum class ApiStatus { LOADING, ERROR, DONE }
@@ -44,17 +42,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _status.value = ApiStatus.LOADING
     }
 
-    private fun callToGetPod() {
-        viewModelScope.launch {
-            try{
-                asteroidRepositoryImpl.getPictureOfDay(API_KEY)
-                _pod.value = asteroidRepositoryImpl.pictureOfDay
-            }catch (e: Throwable){
-                Log.i("pod", "Error")
-            }
-        }
-    }
-
     private fun callToGetAllAsteroids() {
         viewModelScope.launch {
             try {
@@ -66,10 +53,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun getCurrentFormattedDate(): String {
-        val date = Calendar.getInstance().time
-        val dateTime = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        return dateTime.format(date)
+    private fun callToGetPod() {
+        viewModelScope.launch {
+            try {
+                asteroidRepositoryImpl.getPictureOfDay(API_KEY)
+                _pod.value = asteroidRepositoryImpl.pictureOfDay
+            } catch (e: Throwable) {
+                Log.i("pod", "Unable to get Picture of day")
+            }
+        }
     }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {

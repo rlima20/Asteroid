@@ -5,11 +5,15 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.network.AsteroidDTO
 import com.udacity.asteroidradar.viewmodel.ApiStatus
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 /**
  * When (data is null), hide the [RecyclerView], otherwise show it.
@@ -30,11 +34,6 @@ fun bindLoading(progressBar: ProgressBar, data: ApiStatus) {
     } else {
         progressBar.visibility = View.GONE
     }
-}
-
-@BindingAdapter("downloadImage")
-fun downloadAndBindImage(imageView: ImageView, url: String) {
-    Picasso.get().load(url).into(imageView)
 }
 
 @BindingAdapter("statusIcon")
@@ -71,4 +70,18 @@ fun bindTextViewToKmUnit(textView: TextView, number: Double) {
 fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
     val context = textView.context
     textView.text = String.format(context.getString(R.string.km_s_unit_format), number)
+}
+
+fun ImageView.downLoadImage(fragment: Fragment, url: String) {
+    Glide
+        .with(fragment)
+        .load(url)
+        .centerCrop()
+        .into(this)
+}
+
+fun getCurrentFormattedDate(): String {
+    val date = Calendar.getInstance().time
+    val dateTime = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    return dateTime.format(date)
 }
