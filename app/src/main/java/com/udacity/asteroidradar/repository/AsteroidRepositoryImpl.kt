@@ -4,7 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.constants.Constants.API_KEY
 import com.udacity.asteroidradar.database.AsteroidDatabase
-import com.udacity.asteroidradar.database.AsteroidEntity
+import com.udacity.asteroidradar.mapper.asDatabaseAsteroid
+import com.udacity.asteroidradar.mapper.asDomainModel
 import com.udacity.asteroidradar.models.Asteroid
 import com.udacity.asteroidradar.models.PictureOfDay
 import com.udacity.asteroidradar.network.Network
@@ -46,38 +47,6 @@ class AsteroidRepositoryImpl(private val database: AsteroidDatabase) : AsteroidR
             } else {
                 PictureOfDay()
             }
-        }
-    }
-
-    private fun asDatabaseAsteroid(
-        listOfAsteroids: ArrayList<Asteroid>
-    ): Array<AsteroidEntity> {
-        return listOfAsteroids.map {
-            AsteroidEntity(
-                id = it.id,
-                name = it.codename,
-                closeApproachDate = it.closeApproachDate,
-                absoluteMagnitude = it.absoluteMagnitude,
-                estimatedDiameter = it.estimatedDiameter,
-                relativeVelocity = it.relativeVelocity,
-                distanceFromEarth = it.distanceFromEarth,
-                isPotentiallyHazardousAsteroid = it.isPotentiallyHazardous
-            )
-        }.toTypedArray()
-    }
-
-    private fun List<AsteroidEntity>.asDomainModel(): List<Asteroid> {
-        return this.map {
-            Asteroid(
-                id = it.id,
-                codename = it.name,
-                closeApproachDate = it.closeApproachDate,
-                absoluteMagnitude = it.absoluteMagnitude,
-                estimatedDiameter = it.estimatedDiameter,
-                relativeVelocity = it.relativeVelocity,
-                distanceFromEarth = it.distanceFromEarth,
-                isPotentiallyHazardous = it.isPotentiallyHazardousAsteroid
-            )
         }
     }
 }
