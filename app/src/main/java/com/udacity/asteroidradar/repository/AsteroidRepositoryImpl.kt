@@ -5,8 +5,8 @@ import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.constants.Constants.API_KEY
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.database.AsteroidEntity
+import com.udacity.asteroidradar.models.Asteroid
 import com.udacity.asteroidradar.models.PictureOfDay
-import com.udacity.asteroidradar.network.AsteroidDTO
 import com.udacity.asteroidradar.network.Network
 import com.udacity.asteroidradar.network.PodNetwork
 import com.udacity.asteroidradar.network.parseAsteroidsJsonResult
@@ -16,7 +16,7 @@ import org.json.JSONObject
 
 class AsteroidRepositoryImpl(private val database: AsteroidDatabase) : AsteroidRepository {
 
-    val asteroids: LiveData<List<AsteroidDTO>> =
+    val asteroids: LiveData<List<Asteroid>> =
         Transformations.map(database.asteroidDao.getAll()) {
             it.asDomainModel()
         }
@@ -50,7 +50,7 @@ class AsteroidRepositoryImpl(private val database: AsteroidDatabase) : AsteroidR
     }
 
     private fun asDatabaseAsteroid(
-        listOfAsteroids: ArrayList<com.udacity.asteroidradar.models.Asteroid>
+        listOfAsteroids: ArrayList<Asteroid>
     ): Array<AsteroidEntity> {
         return listOfAsteroids.map {
             AsteroidEntity(
@@ -66,17 +66,17 @@ class AsteroidRepositoryImpl(private val database: AsteroidDatabase) : AsteroidR
         }.toTypedArray()
     }
 
-    private fun List<AsteroidEntity>.asDomainModel(): List<AsteroidDTO> {
+    private fun List<AsteroidEntity>.asDomainModel(): List<Asteroid> {
         return this.map {
-            AsteroidDTO(
+            Asteroid(
                 id = it.id,
-                name = it.name,
+                codename = it.name,
                 closeApproachDate = it.closeApproachDate,
                 absoluteMagnitude = it.absoluteMagnitude,
                 estimatedDiameter = it.estimatedDiameter,
-                isPotentiallyHazardousAsteroid = it.isPotentiallyHazardousAsteroid,
-                kilometersPerSecond = it.relativeVelocity,
-                astronomical = it.distanceFromEarth
+                relativeVelocity = it.relativeVelocity,
+                distanceFromEarth = it.distanceFromEarth,
+                isPotentiallyHazardous = it.isPotentiallyHazardousAsteroid
             )
         }
     }

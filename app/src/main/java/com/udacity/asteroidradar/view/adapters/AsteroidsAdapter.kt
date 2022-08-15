@@ -6,47 +6,47 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.databinding.ListItemBinding
-import com.udacity.asteroidradar.network.AsteroidDTO
+import com.udacity.asteroidradar.models.Asteroid
 
 class AsteroidsAdapter(
     val clickListener: AsteroidClickListener
-) : ListAdapter<AsteroidDTO, AsteroidListViewwHoder>(DiffCallback) {
-    companion object DiffCallback : DiffUtil.ItemCallback<AsteroidDTO>() {
-        override fun areItemsTheSame(oldItem: AsteroidDTO, newItem: AsteroidDTO): Boolean {
+) : ListAdapter<Asteroid, AsteroidListViewHolder>(DiffCallback) {
+    companion object DiffCallback : DiffUtil.ItemCallback<Asteroid>() {
+        override fun areItemsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
             return oldItem === newItem
         }
 
-        override fun areContentsTheSame(oldItem: AsteroidDTO, newItem: AsteroidDTO): Boolean {
+        override fun areContentsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
             return oldItem == newItem
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AsteroidListViewwHoder {
-        return AsteroidListViewwHoder.from(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AsteroidListViewHolder {
+        return AsteroidListViewHolder.from(parent)
     }
 
-    override fun onBindViewHolder(holder: AsteroidListViewwHoder, position: Int) {
+    override fun onBindViewHolder(holder: AsteroidListViewHolder, position: Int) {
         holder.bind(clickListener, getItem(position))
     }
 }
 
-class AsteroidListViewwHoder(private var binding: ListItemBinding) :
+class AsteroidListViewHolder(private var binding: ListItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bind(listener: AsteroidClickListener, asteroidDTO: AsteroidDTO) {
-        binding.asteroid = asteroidDTO
+    fun bind(listener: AsteroidClickListener, asteroid: Asteroid) {
+        binding.asteroid = asteroid
         binding.clickListener = listener
         binding.executePendingBindings()
     }
 
     companion object {
-        fun from(parent: ViewGroup): AsteroidListViewwHoder {
+        fun from(parent: ViewGroup): AsteroidListViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val binding = ListItemBinding.inflate(layoutInflater, parent, false)
-            return AsteroidListViewwHoder(binding)
+            return AsteroidListViewHolder(binding)
         }
     }
 }
 
-class AsteroidClickListener(val clickListener: (asteroidDTO: AsteroidDTO) -> Unit) {
-    fun onClick(asteroidDTO: AsteroidDTO) = clickListener(asteroidDTO)
+class AsteroidClickListener(val clickListener: (asteroid: Asteroid) -> Unit) {
+    fun onClick(asteroid: Asteroid) = clickListener(asteroid)
 }

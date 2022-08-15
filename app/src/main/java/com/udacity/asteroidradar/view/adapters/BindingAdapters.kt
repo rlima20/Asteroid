@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.udacity.asteroidradar.R
-import com.udacity.asteroidradar.network.AsteroidDTO
+import com.udacity.asteroidradar.models.Asteroid
 import com.udacity.asteroidradar.viewmodel.ApiStatus
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -19,7 +19,7 @@ import java.util.Locale
  * When (data is null), hide the [RecyclerView], otherwise show it.
  */
 @BindingAdapter("listData")
-fun bindRecyclerView(recyclerView: RecyclerView, data: List<AsteroidDTO>?) {
+fun bindRecyclerView(recyclerView: RecyclerView, data: List<Asteroid>?) {
     val adapter = recyclerView.adapter as AsteroidsAdapter
     adapter.submitList(data) {
         // scroll the list to the top after the diffs are calculated and posted

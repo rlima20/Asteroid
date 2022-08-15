@@ -10,7 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.constants.Constants.API_KEY
 import com.udacity.asteroidradar.database.getDatabase
+import com.udacity.asteroidradar.models.Asteroid
 import com.udacity.asteroidradar.models.PictureOfDay
+import com.udacity.asteroidradar.network.AsteroidDTO
 import com.udacity.asteroidradar.repository.AsteroidRepositoryImpl
 import com.udacity.asteroidradar.view.adapters.getCurrentFormattedDate
 import kotlinx.coroutines.launch
@@ -29,6 +31,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _pod = MutableLiveData<PictureOfDay>()
     val pod: LiveData<PictureOfDay>
         get() = _pod
+
+    private val _navigateToSelectedAsteroid = MutableLiveData<Asteroid>()
+    val navigateToSelectedAsteroid: LiveData<Asteroid>
+        get() = _navigateToSelectedAsteroid
 
     val asteroids = asteroidRepositoryImpl.asteroids
 
@@ -72,5 +78,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
             throw IllegalArgumentException("Unable to construct viewmodel")
         }
+    }
+    fun displayAsteroidDetails(asteroid: Asteroid) {
+        _navigateToSelectedAsteroid.value = asteroid
+    }
+
+    fun displayAsteroidDetailsComplete() {
+        _navigateToSelectedAsteroid.value = null
     }
 }
