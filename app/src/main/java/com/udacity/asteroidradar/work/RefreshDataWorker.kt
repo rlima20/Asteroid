@@ -19,7 +19,7 @@ class RefreshDataWorker(appContext: Context, params: WorkerParameters) : Corouti
         val repository = AsteroidRepositoryImpl(database)
 
         return try {
-            repository.getAllAsteroids("2022-08-12", "2022-08-16")
+            repository.getAllAsteroids("2022-08-13", "2022-08-17")
             Result.success()
         } catch (e: HttpException) {
             Result.retry()

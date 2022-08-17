@@ -59,9 +59,10 @@ private fun getNextSevenDaysFormattedDates(): ArrayList<String> {
     val formattedDateList = ArrayList<String>()
 
     val calendar = Calendar.getInstance()
+    calendar.time = Date(2022 - 1900, 8 - 1, 12)
 
     for (i in 0..Constants.DEFAULT_END_DATE_DAYS) {
-        val currentTime = Date(2022 - 1900, 8 - 1, 12)
+        val currentTime = calendar.time
         val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
         formattedDateList.add(dateFormat.format(currentTime))
         calendar.add(Calendar.DAY_OF_YEAR, 1)

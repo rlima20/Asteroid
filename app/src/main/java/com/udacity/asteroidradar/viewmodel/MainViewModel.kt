@@ -49,7 +49,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private fun callToGetAllAsteroids() {
         viewModelScope.launch {
             try {
-                asteroidRepositoryImpl.getAllAsteroids("2022-08-12", "2022-08-16")
+                asteroidRepositoryImpl.getAllAsteroids("2022-08-13", "2022-08-17")
                 _status.value = ApiStatus.DONE
             } catch (e: Throwable) {
                 _status.value = ApiStatus.ERROR
@@ -57,11 +57,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-
     private fun callToGetAsteroidsByWeek() {
         viewModelScope.launch {
             try {
-                asteroidRepositoryImpl.getAllAsteroids("2022-08-12", "2022-08-15")
+                asteroidRepositoryImpl.getAllAsteroids("2022-08-13", "2022-08-17")
                 _status.value = ApiStatus.DONE
             } catch (e: Throwable) {
                 _status.value = ApiStatus.ERROR
