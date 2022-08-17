@@ -5,17 +5,19 @@ import com.udacity.asteroidradar.constants.Constants
 import com.udacity.asteroidradar.models.Asteroid
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 import org.json.JSONObject
 
-fun parseAsteroidsJsonResult(jsonResult: JSONObject): ArrayList<Asteroid> {
+fun parseAllAsteroidsJsonResult(jsonResult: JSONObject): ArrayList<Asteroid> {
     val nearEarthObjectsJson = jsonResult.getJSONObject("near_earth_objects")
     val asteroidList = ArrayList<Asteroid>()
     val nextSevenDaysFormattedDates = getNextSevenDaysFormattedDates()
 
-    for (formattedDate in nextSevenDaysFormattedDates) {
-        if (nearEarthObjectsJson.has(formattedDate)) {
-            val dateAsteroidJsonArray = nearEarthObjectsJson.getJSONArray(formattedDate)
+    nextSevenDaysFormattedDates.forEach { date ->
+
+        if (nearEarthObjectsJson.has(date)) {
+            val dateAsteroidJsonArray = nearEarthObjectsJson.getJSONArray(date)
 
             for (i in 0 until dateAsteroidJsonArray.length()) {
                 val asteroidJson = dateAsteroidJsonArray.getJSONObject(i)
@@ -37,7 +39,7 @@ fun parseAsteroidsJsonResult(jsonResult: JSONObject): ArrayList<Asteroid> {
                 val asteroid = Asteroid(
                     id,
                     codename,
-                    formattedDate,
+                    date,
                     absoluteMagnitude,
                     estimatedDiameter,
                     relativeVelocity,
@@ -57,8 +59,9 @@ private fun getNextSevenDaysFormattedDates(): ArrayList<String> {
     val formattedDateList = ArrayList<String>()
 
     val calendar = Calendar.getInstance()
+
     for (i in 0..Constants.DEFAULT_END_DATE_DAYS) {
-        val currentTime = calendar.time
+        val currentTime = Date(2022 - 1900, 8 - 1, 12)
         val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
         formattedDateList.add(dateFormat.format(currentTime))
         calendar.add(Calendar.DAY_OF_YEAR, 1)

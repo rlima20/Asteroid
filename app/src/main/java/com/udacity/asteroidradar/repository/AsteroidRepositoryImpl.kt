@@ -10,7 +10,7 @@ import com.udacity.asteroidradar.models.Asteroid
 import com.udacity.asteroidradar.models.PictureOfDay
 import com.udacity.asteroidradar.network.Network
 import com.udacity.asteroidradar.network.PodNetwork
-import com.udacity.asteroidradar.network.parseAsteroidsJsonResult
+import com.udacity.asteroidradar.network.parseAllAsteroidsJsonResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -33,7 +33,7 @@ class AsteroidRepositoryImpl(private val database: AsteroidDatabase) : AsteroidR
             )
 
             if (response.isSuccessful) {
-                val parsedResponse = parseAsteroidsJsonResult(JSONObject(response.body()!!))
+                val parsedResponse = parseAllAsteroidsJsonResult(JSONObject(response.body()!!))
                 database.asteroidDao.insertAll(*asDatabaseAsteroid(parsedResponse))
             }
         }
