@@ -24,11 +24,11 @@ class AsteroidRepositoryImpl(private val database: AsteroidDatabase) : AsteroidR
 
     var pictureOfDay: PictureOfDay = PictureOfDay()
 
-    override suspend fun getAllAsteroids(currentDate: String) {
+    override suspend fun getAllAsteroids(startDate: String, endDate: String) {
         withContext(Dispatchers.IO) {
             val response = Network.asteroids.getAllAsteroidsAsync(
-                currentDate,
-                currentDate,
+                startDate,
+                endDate,
                 API_KEY
             )
 

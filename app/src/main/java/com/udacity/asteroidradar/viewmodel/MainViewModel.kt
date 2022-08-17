@@ -13,7 +13,6 @@ import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.models.Asteroid
 import com.udacity.asteroidradar.models.PictureOfDay
 import com.udacity.asteroidradar.repository.AsteroidRepositoryImpl
-import com.udacity.asteroidradar.view.adapters.getCurrentFormattedDate
 import kotlinx.coroutines.launch
 
 enum class ApiStatus { LOADING, ERROR, DONE }
@@ -50,7 +49,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private fun callToGetAllAsteroids() {
         viewModelScope.launch {
             try {
-                asteroidRepositoryImpl.getAllAsteroids(getCurrentFormattedDate())
+                asteroidRepositoryImpl.getAllAsteroids("2022-08-12", "2022-08-16")
+                _status.value = ApiStatus.DONE
+            } catch (e: Throwable) {
+                _status.value = ApiStatus.ERROR
+            }
+        }
+    }
+
+
+    private fun callToGetAsteroidsByWeek() {
+        viewModelScope.launch {
+            try {
+                asteroidRepositoryImpl.getAllAsteroids("2022-08-12", "2022-08-15")
                 _status.value = ApiStatus.DONE
             } catch (e: Throwable) {
                 _status.value = ApiStatus.ERROR

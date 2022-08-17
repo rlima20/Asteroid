@@ -13,6 +13,7 @@ import com.udacity.asteroidradar.models.Asteroid
 import com.udacity.asteroidradar.viewmodel.ApiStatus
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 /**
@@ -78,10 +79,4 @@ fun ImageView.downLoadImage(fragment: Fragment, url: String) {
         .load(url)
         .centerCrop()
         .into(this)
-}
-
-fun getCurrentFormattedDate(): String {
-    val date = Calendar.getInstance().time
-    val dateTime = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    return dateTime.format(date)
 }
