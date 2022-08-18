@@ -1,6 +1,7 @@
 package com.udacity.asteroidradar.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.constants.Constants.API_KEY
 import com.udacity.asteroidradar.database.AsteroidDatabase
@@ -22,6 +23,10 @@ class AsteroidRepositoryImpl(private val database: AsteroidDatabase) : AsteroidR
             it.asDomainModel()
         }
 
+    private var _allAsteroids = MutableLiveData<List<Asteroid>>()
+    val AllAsteroids: LiveData<List<Asteroid>>
+        get() = _allAsteroids
+
     var pictureOfDay: PictureOfDay = PictureOfDay()
 
     override suspend fun getAllAsteroids(startDate: String, endDate: String) {
@@ -35,6 +40,28 @@ class AsteroidRepositoryImpl(private val database: AsteroidDatabase) : AsteroidR
             if (response.isSuccessful) {
                 val parsedResponse = parseAllAsteroidsJsonResult(JSONObject(response.body()!!))
                 database.asteroidDao.insertAll(*asDatabaseAsteroid(parsedResponse))
+            }
+        }
+    }
+
+    override suspend fun getAllAsteroids() {
+        withContext(Dispatchers.IO) {
+            database.asteroidDao.getAll()
+        }
+    }
+
+    override suspend fun getWeekAsteroids(startDate: String, endDate: String) {
+        withContext(Dispatchers.IO) {
+            Transformations.map(database.asteroidDao.getWeekAsteroids(startDate, endDate)) {
+                _allAsteroids.value = it.asDomainModel()
+            }
+        }
+    }
+
+    override suspend fun getTodayAsteroids(startDate: String) {
+        withContext(Dispatchers.IO) {
+            Transformations.map(database.asteroidDao.getTodayAsteroids(startDate)) {
+                _allAsteroids.value = it.asDomainModel()
             }
         }
     }

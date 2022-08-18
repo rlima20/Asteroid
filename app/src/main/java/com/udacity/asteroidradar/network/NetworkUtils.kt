@@ -59,7 +59,7 @@ private fun getNextSevenDaysFormattedDates(): ArrayList<String> {
     val formattedDateList = ArrayList<String>()
 
     val calendar = Calendar.getInstance()
-    calendar.time = Date(2022 - 1900, 8 - 1, 12)
+    calendar.time = Date(2022 - 1900, 8 - 1, 17)
 
     for (i in 0..Constants.DEFAULT_END_DATE_DAYS) {
         val currentTime = calendar.time

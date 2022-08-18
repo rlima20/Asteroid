@@ -53,7 +53,11 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.navigateToSelectedAsteroid.observe(viewLifecycleOwner, Observer { asteroid ->
             if (null != asteroid) {
-                this.findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))
+                this.findNavController().navigate(
+                    MainFragmentDirections
+                        .actionShowDetail
+                            (asteroid)
+                )
                 viewModel.displayAsteroidDetailsComplete()
             }
         })
@@ -65,6 +69,17 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return true
+        return when (item.itemId) {
+            R.id.show_all_menu -> {
+                true
+            }
+            R.id.show_rent_menu -> {
+                true
+            }
+            R.id.show_buy_menu -> {
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

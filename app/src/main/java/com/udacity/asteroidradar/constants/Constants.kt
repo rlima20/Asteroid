@@ -6,4 +6,6 @@ object Constants {
     const val DEFAULT_END_DATE_DAYS = 7
     const val BASE_URL = "https://api.nasa.gov/"
     const val BASE_URL_POD = "https://api.nasa.gov/"
+    const val START_DATE = "2022-08-17"
+    const val END_DATE = "2022-08-24"
 }
