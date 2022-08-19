@@ -74,9 +74,11 @@ class MainFragment : Fragment() {
                 true
             }
             R.id.show_rent_menu -> {
+                viewModel.callToGetTodayAsteroids()
                 true
             }
             R.id.show_buy_menu -> {
+                viewModel.callToGetWeekAsteroids()
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -18,14 +18,11 @@ import org.json.JSONObject
 
 class AsteroidRepositoryImpl(private val database: AsteroidDatabase) : AsteroidRepository {
 
+    private var _allAsteroids = MutableLiveData<List<Asteroid>>()
     val asteroids: LiveData<List<Asteroid>> =
         Transformations.map(database.asteroidDao.getAll()) {
             it.asDomainModel()
         }
-
-    private var _allAsteroids = MutableLiveData<List<Asteroid>>()
-    val AllAsteroids: LiveData<List<Asteroid>>
-        get() = _allAsteroids
 
     var pictureOfDay: PictureOfDay = PictureOfDay()
 
@@ -46,7 +43,9 @@ class AsteroidRepositoryImpl(private val database: AsteroidDatabase) : AsteroidR
 
     override suspend fun getAllAsteroids() {
         withContext(Dispatchers.IO) {
-            database.asteroidDao.getAll()
+            Transformations.map(database.asteroidDao.getAll()) {
+                _allAsteroids.value = it.asDomainModel()
+            }
         }
     }
 
