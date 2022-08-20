@@ -58,7 +58,7 @@ class MainFragment : Fragment() {
                         .actionShowDetail
                             (asteroid)
                 )
-                viewModel.displayAsteroidDetailsComplete()
+                viewModel.displayAsteroidDetailsCompleted()
             }
         })
     }
@@ -71,14 +71,15 @@ class MainFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.show_all_menu -> {
+                viewModel.getAllAsteroidsFromDatabase()
                 true
             }
             R.id.show_rent_menu -> {
-                viewModel.callToGetTodayAsteroids()
+                viewModel.getTodayAsteroids()
                 true
             }
             R.id.show_buy_menu -> {
-                viewModel.callToGetWeekAsteroids()
+                viewModel.getWeekAsteroids()
                 true
             }
             else -> super.onOptionsItemSelected(item)

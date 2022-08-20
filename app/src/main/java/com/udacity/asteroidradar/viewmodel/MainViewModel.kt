@@ -40,15 +40,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         setupStatus()
-        callToGetAllAsteroids()
-        callToGetPod()
+        getAllAsteroids()
+        getPod()
     }
 
     private fun setupStatus() {
         _status.value = ApiStatus.LOADING
     }
 
-    private fun callToGetAllAsteroids() {
+    private fun getAllAsteroids() {
         viewModelScope.launch {
             try {
                 asteroidRepositoryImpl.getAllAsteroids(START_DATE, END_DATE)
@@ -59,19 +59,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun callToGetTodayAsteroids() {
-        viewModelScope.launch {
-            asteroidRepositoryImpl.getTodayAsteroids(START_DATE)
-        }
-    }
-
-    fun callToGetWeekAsteroids() {
-        viewModelScope.launch {
-            asteroidRepositoryImpl.getWeekAsteroids(START_DATE, END_DATE)
-        }
-    }
-
-    private fun callToGetPod() {
+    private fun getPod() {
         viewModelScope.launch {
             try {
                 asteroidRepositoryImpl.getPictureOfDay(API_KEY)
@@ -82,11 +70,29 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun getAllAsteroidsFromDatabase() {
+        viewModelScope.launch {
+            asteroidRepositoryImpl.getAllAsteroids()
+        }
+    }
+
+    fun getTodayAsteroids() {
+        viewModelScope.launch {
+            asteroidRepositoryImpl.getTodayAsteroids(START_DATE)
+        }
+    }
+
+    fun getWeekAsteroids() {
+        viewModelScope.launch {
+            asteroidRepositoryImpl.getWeekAsteroids(START_DATE, END_DATE)
+        }
+    }
+
     fun displayAsteroidDetails(asteroid: Asteroid) {
         _navigateToSelectedAsteroid.value = asteroid
     }
 
-    fun displayAsteroidDetailsComplete() {
+    fun displayAsteroidDetailsCompleted() {
         _navigateToSelectedAsteroid.value = null
     }
 

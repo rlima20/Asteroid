@@ -3,7 +3,10 @@ package com.udacity.asteroidradar.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.udacity.asteroidradar.constants.Constants.API_KEY
+import com.udacity.asteroidradar.constants.Constants.END_DATE
+import com.udacity.asteroidradar.constants.Constants.START_DATE
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.mapper.asDatabaseAsteroid
 import com.udacity.asteroidradar.mapper.asDomainModel
@@ -16,12 +19,31 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
+enum class Filter { TODAY, WEEK, ALL }
+
 class AsteroidRepositoryImpl(private val database: AsteroidDatabase) : AsteroidRepository {
 
-    private var _allAsteroids = MutableLiveData<List<Asteroid>>()
+    private var _allAsteroidsFilter = MutableLiveData<Filter>(Filter.ALL)
+
     val asteroids: LiveData<List<Asteroid>> =
-        Transformations.map(database.asteroidDao.getAll()) {
-            it.asDomainModel()
+        Transformations.switchMap(_allAsteroidsFilter) { filter ->
+            when (filter) {
+                Filter.TODAY -> {
+                    database.asteroidDao.getTodayAsteroids(START_DATE).map {
+                        it.asDomainModel()
+                    }
+                }
+                Filter.WEEK -> {
+                    database.asteroidDao.getWeekAsteroids(START_DATE, END_DATE).map {
+                        it.asDomainModel()
+                    }
+                }
+                else -> {
+                    database.asteroidDao.getAll().map {
+                        it.asDomainModel()
+                    }
+                }
+            }
         }
 
     var pictureOfDay: PictureOfDay = PictureOfDay()
@@ -42,27 +64,15 @@ class AsteroidRepositoryImpl(private val database: AsteroidDatabase) : AsteroidR
     }
 
     override suspend fun getAllAsteroids() {
-        withContext(Dispatchers.IO) {
-            Transformations.map(database.asteroidDao.getAll()) {
-                _allAsteroids.value = it.asDomainModel()
-            }
-        }
+        _allAsteroidsFilter.postValue(Filter.ALL)
     }
 
     override suspend fun getWeekAsteroids(startDate: String, endDate: String) {
-        withContext(Dispatchers.IO) {
-            Transformations.map(database.asteroidDao.getWeekAsteroids(startDate, endDate)) {
-                _allAsteroids.value = it.asDomainModel()
-            }
-        }
+        _allAsteroidsFilter.postValue(Filter.WEEK)
     }
 
     override suspend fun getTodayAsteroids(startDate: String) {
-        withContext(Dispatchers.IO) {
-            Transformations.map(database.asteroidDao.getTodayAsteroids(startDate)) {
-                _allAsteroids.value = it.asDomainModel()
-            }
-        }
+        _allAsteroidsFilter.postValue(Filter.TODAY)
     }
 
     override suspend fun getPictureOfDay(apiKey: String) {
