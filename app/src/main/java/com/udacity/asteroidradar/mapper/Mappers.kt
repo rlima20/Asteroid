@@ -35,18 +35,3 @@ fun List<AsteroidEntity>.asDomainModel(): List<Asteroid> {
     }
 }
 
-fun List<Asteroid>.asModel(): List<Asteroid> {
-    return this.map {
-        Asteroid(
-            id = it.id,
-            codename = it.codename,
-            closeApproachDate = it.closeApproachDate,
-            absoluteMagnitude = it.absoluteMagnitude,
-            estimatedDiameter = it.estimatedDiameter,
-            relativeVelocity = it.relativeVelocity,
-            distanceFromEarth = it.distanceFromEarth,
-            isPotentiallyHazardous = it.isPotentiallyHazardous
-        )
-    }
-}
-

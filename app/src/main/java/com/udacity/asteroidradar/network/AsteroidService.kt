@@ -10,9 +10,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 
+/**
+ * Here in the getAllAsteroidsAsync I get a response from the api which is a String.
+ * The end-point is in the value
+ * The parameters are put in the @Query
+ */
 @JsonClass(generateAdapter = true)
 interface AsteroidService {
     @GET("neo/rest/v1/feed")
@@ -27,6 +31,11 @@ private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()
 
+/**
+ * Creation of retrofit instance
+ * Use ScalarsConverterFactory to parse retrofit response
+ * Use MoshiConverterFactory to parse retrofit response
+ */
 object Network {
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(ScalarsConverterFactory.create())
