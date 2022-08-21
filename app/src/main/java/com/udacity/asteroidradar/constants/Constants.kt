@@ -8,4 +8,6 @@ object Constants {
     const val BASE_URL_POD = "https://api.nasa.gov/"
     const val START_DATE = "2022-08-19"
     const val END_DATE = "2022-08-26"
+    const val IS_HAZADAROUS = "This asteroid is Hazadarous"
+    const val IS_NOT_HAZADAROUS = "This asteroid is not Hazadarous"
 }

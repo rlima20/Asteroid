@@ -9,12 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.udacity.asteroidradar.R
+import com.udacity.asteroidradar.constants.Constants.IS_HAZADAROUS
+import com.udacity.asteroidradar.constants.Constants.IS_NOT_HAZADAROUS
 import com.udacity.asteroidradar.models.Asteroid
 import com.udacity.asteroidradar.viewmodel.ApiStatus
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 /**
  * When (data is null), hide the [RecyclerView], otherwise show it.
@@ -71,6 +69,10 @@ fun bindTextViewToKmUnit(textView: TextView, number: Double) {
 fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
     val context = textView.context
     textView.text = String.format(context.getString(R.string.km_s_unit_format), number)
+}
+
+fun String.setContentDescription(isHazardous: Boolean) {
+    this.format(if (isHazardous) IS_HAZADAROUS else IS_NOT_HAZADAROUS)
 }
 
 fun ImageView.downLoadImage(fragment: Fragment, url: String) {

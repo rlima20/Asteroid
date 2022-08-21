@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.constants.Constants.API_KEY
 import com.udacity.asteroidradar.constants.Constants.END_DATE
+import com.udacity.asteroidradar.constants.Constants.IS_HAZADAROUS
+import com.udacity.asteroidradar.constants.Constants.IS_NOT_HAZADAROUS
 import com.udacity.asteroidradar.constants.Constants.START_DATE
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.models.Asteroid
@@ -94,6 +96,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun displayAsteroidDetailsCompleted() {
         _navigateToSelectedAsteroid.value = null
+    }
+
+    fun setContentDescription(isHazardous: Boolean): String {
+        return if (isHazardous) IS_HAZADAROUS else IS_NOT_HAZADAROUS
     }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {
